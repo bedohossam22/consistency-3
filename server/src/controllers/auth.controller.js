@@ -1,5 +1,8 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
+import generateToken from "../utils/jwt.js";
+
+
 
 const Register = async (req, res) => {
   try {
@@ -44,7 +47,12 @@ const login = async (req , res) => {
     if(user){
       const isMatch = await bcrypt.compare(password , user.password)
       if(isMatch){
-      res.status(200).json({ message: "logged in sucessfully"})
+      const token = generateToken(user._id);
+
+res.status(200).json({
+  message: "Logged in successfully",
+  token,
+});
     } else {
             res.status(401).json({ message: "Incorrect passowrd"})
 
