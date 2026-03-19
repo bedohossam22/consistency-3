@@ -16,7 +16,7 @@ const validateRegister = [
   .matches(/[A-Z]/)
   .withMessage("Password must contain at least one uppercase letter"),
 
-  body("age")
+  body("age") 
     .isInt({ min: 18 })
     .withMessage("Age must be at least 18"),
 

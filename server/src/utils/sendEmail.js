@@ -2,6 +2,7 @@ import nodemailer from "nodemailer";
 
 const sendEmail = async (to, subject, text) => {
   try {
+
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -10,14 +11,14 @@ const sendEmail = async (to, subject, text) => {
       }
     });
 
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
+    const info = await transporter.sendMail({
+      from: `"Marriage App" <${process.env.EMAIL_USER}>`,
       to,
       subject,
       text
-    };
+    });
 
-    await transporter.sendMail(mailOptions);
+    console.log("Email sent:", info.response);
 
   } catch (error) {
     console.error("Email error:", error);
