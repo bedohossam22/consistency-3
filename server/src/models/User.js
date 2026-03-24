@@ -53,7 +53,7 @@ const userSchema = new mongoose.Schema(
     wantsChildren: Boolean,
     acceptsPolygamy: Boolean,
 
-    hijab: Boolean, // for females
+    hijab: Boolean,
     smoking: Boolean,
     listensToMusic: Boolean,
 
@@ -63,28 +63,34 @@ const userSchema = new mongoose.Schema(
     },
 
     // ===============================
-    // 3. Images (Controlled)
+    // 3. Images
     // ===============================
     profileImage: {
-      type: String, // cloudinary URL
+      type: String,
     },
 
     imageApproved: {
       type: Boolean,
-      default: false, // admin or guardian must approve
+      default: false,
     },
 
     // ===============================
-    // 4. Account Status
+    // 4. Password Reset
+    // ===============================
+    resetPasswordToken: {
+      type: String,
+    },
+
+    resetPasswordExpire: {
+      type: Date,
+    },
+
+    // ===============================
+    // 5. Status
     // ===============================
     isActive: {
       type: Boolean,
       default: true,
-    },
-
-    createdAt: {
-      type: Date,
-      default: Date.now,
     },
   },
   { timestamps: true }
