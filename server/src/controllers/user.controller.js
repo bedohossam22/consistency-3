@@ -69,33 +69,56 @@ const deactivateAccount = async (req, res) => {
 
 
 
-const likeUser = async ( req , res ) => {
+const likeUser = async (req, res) => {
   try {
-    const currentUserId = req.body._id;
+    const currentUserId = req.user._id; 
     const targetUserId = req.params.id;
 
-    // prevent self-like
-    if (currentUser.toString() === targetUser){
-      return res.status(400).json({message : "You cannot like yourself"})
+    // ❗ Prevent self-like
+    if (currentUserId.toString() === targetUserId) {
+      return res.status(400).json({ message: "You cannot like yourself" });
     }
 
-    // check if target exists
+    // ❗ Check if target user exists
     const targetUser = await User.findById(targetUserId);
-    if (!targetUser){
-        return res.status(400).json({message : "Cannont Find Uder"})
+    if (!targetUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    //  Get current user
+    const currentUser = await User.findById(currentUserId);
+
+    //  Check if already liked
+    const alreadyLiked = currentUser.likes.some(
+      (id) => id.toString() === targetUserId
+    );
+
+    if (alreadyLiked) {
+      // 🔄 UNLIKE
+      currentUser.likes = currentUser.likes.filter(
+        (id) => id.toString() !== targetUserId
+      );
+
+      await currentUser.save();
+
+      return res.json({ message: "User unliked successfully" });
+    } else {
+      //  LIKE
+      currentUser.likes.push(targetUserId);
+
+      await currentUser.save();
+
+      return res.json({ message: "User liked successfully" });
     }
 
-    // get the current user
-    const currentUser = await User.findById(currentUserId)
-
-} catch {
-  
-}
-}
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 
 export {
   getMyProfile,
   updateMyProfile,
-  deactivateAccount
+  deactivateAccount,
+  likeUser
 };
