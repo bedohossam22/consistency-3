@@ -68,6 +68,32 @@ const deactivateAccount = async (req, res) => {
 };
 
 
+
+const likeUser = async ( req , res ) => {
+  try {
+    const currentUserId = req.body._id;
+    const targetUserId = req.params.id;
+
+    // prevent self-like
+    if (currentUser.toString() === targetUser){
+      return res.status(400).json({message : "You cannot like yourself"})
+    }
+
+    // check if target exists
+    const targetUser = await User.findById(targetUserId);
+    if (!targetUser){
+        return res.status(400).json({message : "Cannont Find Uder"})
+    }
+
+    // get the current user
+    const currentUser = await User.findById(currentUserId)
+
+} catch {
+  
+}
+}
+
+
 export {
   getMyProfile,
   updateMyProfile,
