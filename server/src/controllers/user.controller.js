@@ -91,13 +91,13 @@ const likeUser = async (req, res) => {
     const alreadyLiked = currentUser.likes.some(
       (id) => id.toString() === targetUserId
     );
-
+  // do unlike 
     if (alreadyLiked) {
       // 🔄 UNLIKE
       currentUser.likes = currentUser.likes.filter(
         (id) => id.toString() !== targetUserId
       );
-
+ 
       await currentUser.save();
 
       return res.json({ message: "User unliked successfully" });
