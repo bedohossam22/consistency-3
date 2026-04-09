@@ -1,3 +1,4 @@
+
 import User from "../models/User.js";
 
 // Get logged-in user profile
@@ -93,7 +94,7 @@ const likeUser = async (req, res) => {
     );
   // do unlike 
     if (alreadyLiked) {
-      // 🔄 UNLIKE
+      //  UNLIKE
       currentUser.likes = currentUser.likes.filter(
         (id) => id.toString() !== targetUserId
       );
@@ -115,10 +116,29 @@ const likeUser = async (req, res) => {
   }
 };
 
+const getMyLikes = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id)
+      .populate("likes", "name email age")
+      .select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      likes: user.likes
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 export {
   getMyProfile,
   updateMyProfile,
   deactivateAccount,
-  likeUser
+  likeUser ,
+  getMyLikes
 };

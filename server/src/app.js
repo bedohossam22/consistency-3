@@ -13,6 +13,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/likes" , likeRoutes);
+app.use("/my-likes" , likeRoutes);
 app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
