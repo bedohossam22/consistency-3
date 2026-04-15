@@ -75,12 +75,12 @@ const likeUser = async (req, res) => {
     const currentUserId = req.user._id; 
     const targetUserId = req.params.id;
 
-    // ❗ Prevent self-like
+    //  Prevent self-like
     if (currentUserId.toString() === targetUserId) {
       return res.status(400).json({ message: "You cannot like yourself" });
     }
 
-    // ❗ Check if target user exists
+    //  Check if target user exists
     const targetUser = await User.findById(targetUserId);
     if (!targetUser) {
       return res.status(404).json({ message: "User not found" });
